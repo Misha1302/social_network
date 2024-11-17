@@ -1,4 +1,4 @@
-from Db.SqliteCursorProvider import SqliteCursorProvider
+from database.sqlite_cursor_provider import SqliteCursorProvider
 
 
 class UserService:
