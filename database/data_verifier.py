@@ -1,3 +1,7 @@
+from controllers.message import Message
+from database.user_service import UserService
+
+
 class DataVerifier:
     @classmethod
     def verify_user_data(cls, user) -> (bool, str):
@@ -9,4 +13,12 @@ class DataVerifier:
             return False, "Email is incorrect"
         if not (0 <= user.get_years() <= 150):
             return False, "Invalid birth date"
+        return True, ""
+
+    @classmethod
+    def verify_message(cls, msg: Message) -> (bool, str):
+        if len(UserService().get_users_with_this_id(msg.user1_id)) == 0:
+            return False, f"No user with ID={msg.user1_id}"
+        if len(UserService().get_users_with_this_id(msg.user2_id)) == 0:
+            return False, f"No user with ID={msg.user2_id}"
         return True, ""

@@ -1,5 +1,6 @@
 from flask import *
 
+from controllers.message import Message
 from controllers.statuses import Statuses
 from database.data_verifier import DataVerifier
 from database.user import User
@@ -20,8 +21,19 @@ def init_controller(flask_app: Flask):
         if service.get_users_with_this_name(user.name):
             return f'User with name {user.name} already exists', Statuses.BAD_REQUEST
 
-        service.add_user(user.name, user.birth_date)
+        service.add_user(user)
         return f'User with name {user.name} was added', Statuses.CREATED
+
+    @flask_app.post('/add_message')
+    def add_message():
+        msg = Message(request.json)
+
+        is_correct, error = DataVerifier.verify_message(msg)
+        if not is_correct:
+            return error, Statuses.BAD_REQUEST
+
+        UserService().add_message(msg)
+        return f'Message created', Statuses.CREATED
 
     @flask_app.get('/get_all_users')
     def get_all_users():

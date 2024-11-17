@@ -1,10 +1,13 @@
+from controllers.message import Message
 from database.sqlite_cursor_provider import SqliteCursorProvider
+from database.user import User
 
 
 class UserService:
-    def add_user(self, name, birth_date):
+    def add_user(self, user: User):
         with SqliteCursorProvider(None) as cursor:
-            cursor.execute(f"INSERT INTO users VALUES ('{name}', '{birth_date}')")
+            cursor.execute(
+                f"INSERT INTO users VALUES ('{user.user_id}', '{user.name}', '{user.password}', '{user.email}', '{user.birth_date}')")
 
     def get_all_users(self):
         with SqliteCursorProvider(None) as cursor:
@@ -15,3 +18,13 @@ class UserService:
         with SqliteCursorProvider(None) as cursor:
             cursor.execute(f"SELECT * FROM users WHERE user_name = '{name}'")
             return cursor.fetchall()
+
+    def get_users_with_this_id(self, id):
+        with SqliteCursorProvider(None) as cursor:
+            cursor.execute(f"SELECT * FROM users WHERE user_id = '{id}'")
+            return cursor.fetchall()
+
+    def add_message(self, msg: Message):
+        with SqliteCursorProvider(None) as cursor:
+            cursor.execute(
+                f"INSERT INTO messages VALUES ('{msg.msg_id}', '{msg.user1_id}', '{msg.user2_id}', '{msg.msg_text}')")
