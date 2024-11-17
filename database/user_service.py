@@ -10,3 +10,8 @@ class UserService:
         with SqliteCursorProvider(None) as cursor:
             cursor.execute("SELECT * FROM users")
             return cursor.fetchall()
+
+    def get_users_with_this_name(self, name):
+        with SqliteCursorProvider(None) as cursor:
+            cursor.execute(f"SELECT * FROM users WHERE user_name = '{name}'")
+            return cursor.fetchall()
