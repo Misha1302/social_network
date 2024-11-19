@@ -35,6 +35,17 @@ def init_controller(flask_app: Flask):
         UserService().add_message(msg)
         return f'Message created', Statuses.CREATED
 
+    @flask_app.post('/add_image')
+    def add_image():
+        img = request.files.get('image')
+
+        is_correct, error = DataVerifier.verify_image(img)
+        if not is_correct:
+            return error, Statuses.BAD_REQUEST
+
+        img_id = UserService().add_image(img)
+        return f'Image created with ID={img_id}', Statuses.CREATED
+
     @flask_app.get('/get_all_users')
     def get_all_users():
         return UserService().get_all_users(), Statuses.OK

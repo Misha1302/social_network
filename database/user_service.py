@@ -1,3 +1,4 @@
+from database.images_service import ImagesService
 from controllers.message import Message
 from database.sqlite_cursor_provider import SqliteCursorProvider
 from database.user import User
@@ -28,3 +29,6 @@ class UserService:
         with SqliteCursorProvider(None) as cursor:
             cursor.execute(
                 f"INSERT INTO messages VALUES ('{msg.msg_id}', '{msg.user1_id}', '{msg.user2_id}', '{msg.msg_text}')")
+
+    def add_image(self, img):
+        return ImagesService().add_image(img)

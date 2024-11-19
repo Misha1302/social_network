@@ -1,3 +1,5 @@
+from werkzeug.datastructures import FileStorage
+
 from controllers.message import Message
 from database.user_service import UserService
 
@@ -21,4 +23,14 @@ class DataVerifier:
             return False, f"No user with ID={msg.user1_id}"
         if len(UserService().get_users_with_this_id(msg.user2_id)) == 0:
             return False, f"No user with ID={msg.user2_id}"
+        return True, ""
+
+    @classmethod
+    def verify_image(cls, img: FileStorage) -> (bool, str):
+        IMAGE_MAX_SIZE = 1 * 1024 * 1024
+
+        size_in_bytes = len(img.stream.read())
+
+        if size_in_bytes > IMAGE_MAX_SIZE:
+            return False, f"Image must be lighter than {IMAGE_MAX_SIZE // 1024 // 1024} mb"
         return True, ""
