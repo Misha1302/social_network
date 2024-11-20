@@ -1,6 +1,8 @@
 from werkzeug.datastructures import FileStorage
 
+from controllers.app_controller import AppController
 from controllers.message import Message
+from controllers.root_password import RootPassword
 from database.user_service import UserService
 
 
@@ -19,10 +21,15 @@ class DataVerifier:
 
     @classmethod
     def verify_message(cls, msg: Message) -> (bool, str):
-        if len(UserService().get_users_with_this_id(msg.user1_id)) == 0:
+        users1_id = UserService().get_users_with_this_id(msg.user1_id)
+        users2_id = UserService().get_users_with_this_id(msg.user2_id)
+        if len(users1_id) == 0:
             return False, f"No user with ID={msg.user1_id}"
-        if len(UserService().get_users_with_this_id(msg.user2_id)) == 0:
+        if len(users2_id) == 0:
             return False, f"No user with ID={msg.user2_id}"
+        # TODO: new ctors to never use [0][1] and use [0].name
+        if not AppController().authService.is_valid_key(msg.auth_key, users1_id[0][1]):
+            return False, f"Invalid auth key"
         return True, ""
 
     @classmethod
@@ -33,4 +40,10 @@ class DataVerifier:
 
         if size_in_bytes > IMAGE_MAX_SIZE:
             return False, f"Image must be lighter than {IMAGE_MAX_SIZE // 1024 // 1024} mb"
+        return True, ""
+
+    @classmethod
+    def verify_password(cls, password: RootPassword) -> (bool, str):
+        if not password.is_correct():
+            return False, f"Password is incorrect"
         return True, ""

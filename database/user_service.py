@@ -1,9 +1,10 @@
-from database.images_service import ImagesService
 from controllers.message import Message
+from database.images_service import ImagesService
 from database.sqlite_cursor_provider import SqliteCursorProvider
 from database.user import User
 
 
+# TODO: invulnerable to sql injections
 class UserService:
     def add_user(self, user: User):
         with SqliteCursorProvider(None) as cursor:

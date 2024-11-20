@@ -7,7 +7,7 @@ from database.user import User
 from database.user_service import UserService
 
 
-def init_controller(flask_app: Flask):
+def init_adding_controller(flask_app: Flask):
     @flask_app.post('/add_user')
     def add_new_user():
         user = User(request.json)
@@ -45,7 +45,3 @@ def init_controller(flask_app: Flask):
 
         img_id = UserService().add_image(img)
         return f'Image created with ID={img_id}', Statuses.CREATED
-
-    @flask_app.get('/get_all_users')
-    def get_all_users():
-        return UserService().get_all_users(), Statuses.OK
