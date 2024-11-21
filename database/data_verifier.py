@@ -1,8 +1,8 @@
 from werkzeug.datastructures import FileStorage
 
-from controllers.app_controller import AppController
-from controllers.message import Message
-from controllers.root_password import RootPassword
+from controllers.controllersss.app_controller import AppController
+from controllers.helpers.message import Message
+from controllers.helpers.root_password import RootPassword
 from database.user_service import UserService
 
 
@@ -27,8 +27,7 @@ class DataVerifier:
             return False, f"No user with ID={msg.user1_id}"
         if len(users2_id) == 0:
             return False, f"No user with ID={msg.user2_id}"
-        # TODO: new ctors to never use [0][1] and use [0].name
-        if not AppController().authService.is_valid_key(msg.auth_key, users1_id[0][1]):
+        if not AppController().authService.is_valid_key(msg.auth_key, users1_id[0].name):
             return False, f"Invalid auth key"
         return True, ""
 

@@ -1,5 +1,5 @@
-from controllers.auth_service import AuthService
-from controllers.singleton import Singleton
+from controllers.helpers.auth_service import AuthService
+from controllers.helpers.singleton import Singleton
 
 
 class AppController(metaclass=Singleton):

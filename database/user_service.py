@@ -1,7 +1,13 @@
-from controllers.message import Message
+from typing import List, Any
+
+from controllers.helpers.message import Message
 from database.images_service import ImagesService
 from database.sqlite_cursor_provider import SqliteCursorProvider
 from database.user import User
+
+
+def to_users(collection: List[Any]):
+    return [User(x) for x in collection]
 
 
 # TODO: invulnerable to sql injections
@@ -14,17 +20,17 @@ class UserService:
     def get_all_users(self):
         with SqliteCursorProvider(None) as cursor:
             cursor.execute("SELECT * FROM users")
-            return cursor.fetchall()
+            return to_users(cursor.fetchall())
 
     def get_users_with_this_name(self, name):
         with SqliteCursorProvider(None) as cursor:
             cursor.execute(f"SELECT * FROM users WHERE user_name = '{name}'")
-            return cursor.fetchall()
+            return to_users(cursor.fetchall())
 
-    def get_users_with_this_id(self, id):
+    def get_users_with_this_id(self, user_id):
         with SqliteCursorProvider(None) as cursor:
-            cursor.execute(f"SELECT * FROM users WHERE user_id = '{id}'")
-            return cursor.fetchall()
+            cursor.execute(f"SELECT * FROM users WHERE user_id = '{user_id}'")
+            return to_users(cursor.fetchall())
 
     def add_message(self, msg: Message):
         with SqliteCursorProvider(None) as cursor:

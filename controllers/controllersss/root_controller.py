@@ -1,7 +1,8 @@
 from flask import Flask, request
 
-from controllers.root_password import RootPassword
-from controllers.statuses import Statuses
+from controllers.helpers.json_helper import JsonHelper
+from controllers.helpers.root_password import RootPassword
+from controllers.helpers.statuses import Statuses
 from database.data_verifier import DataVerifier
 from database.user_service import UserService
 
@@ -15,4 +16,4 @@ def init_root_controller(flask_app: Flask):
         if not is_correct:
             return error, Statuses.BAD_REQUEST
 
-        return UserService().get_all_users(), Statuses.OK
+        return JsonHelper.to_json(UserService().get_all_users()), Statuses.OK
