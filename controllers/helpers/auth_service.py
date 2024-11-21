@@ -1,6 +1,6 @@
 from uuid import uuid4
 
-from controllers.helpers.user_login_data import UserLoginData
+from data_objects.user_login_data import UserLoginData
 
 
 class AuthService:

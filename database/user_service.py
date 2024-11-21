@@ -1,9 +1,9 @@
 from typing import List, Any
 
-from controllers.helpers.message import Message
+from data_objects.message import Message
 from database.images_service import ImagesService
 from database.sqlite_cursor_provider import SqliteCursorProvider
-from database.user import User
+from data_objects.user import User
 
 
 def to_users(collection: List[Any]):

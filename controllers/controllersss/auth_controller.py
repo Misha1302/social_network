@@ -2,7 +2,7 @@ from flask import Flask, request
 
 from controllers.controllersss.app_controller import AppController
 from controllers.helpers.statuses import Statuses
-from controllers.helpers.user_login_data import UserLoginData
+from data_objects.user_login_data import UserLoginData
 from database.user_service import UserService
 
 

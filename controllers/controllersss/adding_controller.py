@@ -1,9 +1,9 @@
 from flask import *
 
-from controllers.helpers.message import Message
+from data_objects.message import Message
 from controllers.helpers.statuses import Statuses
 from database.data_verifier import DataVerifier
-from database.user import User
+from data_objects.user import User
 from database.user_service import UserService
 
 

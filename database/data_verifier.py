@@ -1,7 +1,7 @@
 from werkzeug.datastructures import FileStorage
 
 from controllers.controllersss.app_controller import AppController
-from controllers.helpers.message import Message
+from data_objects.message import Message
 from controllers.helpers.root_password import RootPassword
 from database.user_service import UserService
 

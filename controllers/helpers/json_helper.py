@@ -1,7 +1,7 @@
 import json
 from typing import List
 
-from database.user import User
+from data_objects.user import User
 
 json_encoder = json.JSONEncoder()
 
