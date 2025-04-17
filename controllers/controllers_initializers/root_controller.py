@@ -1,8 +1,8 @@
 from flask import Flask, request
 
 from controllers.helpers.json_helper import JsonHelper
-from data_objects.root_password import RootPassword
 from controllers.helpers.statuses import Statuses
+from data_objects.root_password import RootPassword
 from database.data_verifier import DataVerifier
 from database.user_service import UserService
 

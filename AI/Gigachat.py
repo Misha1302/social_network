@@ -1,5 +1,3 @@
-from queue import PriorityQueue
-
 from gigachat import GigaChat
 
 import SECRETS

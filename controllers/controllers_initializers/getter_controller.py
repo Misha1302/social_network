@@ -13,8 +13,8 @@ def init_auth_controller(flask_app: Flask):
 
     @flask_app.get('/get_is_right_login_and_password')
     def get_is_right_login_and_password():
-        is_correct, error = AuthService() \
-            .is_valid_user_login_data(UserLoginData(request.json['name'], request.json['password']))
+        is_correct, error = AuthService().is_valid_user_login_data(
+            UserLoginData(request.json['name'], request.json['password']))
 
         if not is_correct:
             return error, Statuses.BAD_REQUEST

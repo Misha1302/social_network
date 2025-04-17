@@ -10,6 +10,7 @@ from database.sqlite_cursor_provider import SqliteCursorProvider
 def to_users(collection: List[Any]):
     return [User(x) for x in collection]
 
+
 def to_posts(collection: List[Any]):
     return [Post(x) for x in collection]
 

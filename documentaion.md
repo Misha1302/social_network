@@ -28,8 +28,8 @@
 ## AuthService
 
 * get_auth_key
-  * return key that may be used to 
-  * if not exists creates new auth key
+    * return key that may be used to
+    * if not exists creates new auth key
 * is_valid_key - checks
 
 ## User
