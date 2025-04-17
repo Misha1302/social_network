@@ -1,8 +1,10 @@
 from werkzeug.datastructures import FileStorage
 
-from controllers.controllersss.app_controller import AppController
+from controllers.helpers.auth_service import AuthService
+from data_objects.add_post_data import AddPostData
 from data_objects.message import Message
-from controllers.helpers.root_password import RootPassword
+from data_objects.root_password import RootPassword
+from data_objects.user_login_data import UserLoginData
 from database.user_service import UserService
 
 
@@ -27,7 +29,7 @@ class DataVerifier:
             return False, f"No user with ID={msg.user1_id}"
         if len(users2_id) == 0:
             return False, f"No user with ID={msg.user2_id}"
-        if not AppController().authService.is_valid_key(msg.auth_key, users1_id[0].name):
+        if not AuthService().is_valid_user_login_data(UserLoginData(msg.auth_key, users1_id[0].name)):
             return False, f"Invalid auth key"
         return True, ""
 
@@ -38,7 +40,7 @@ class DataVerifier:
         size_in_bytes = len(img.stream.read())
 
         if size_in_bytes > IMAGE_MAX_SIZE:
-            return False, f"Image must be lighter than {IMAGE_MAX_SIZE // 1024 // 1024} mb"
+            return False, f"Image must be lighter than {IMAGE_MAX_SIZE / 1024 / 1024} mb"
         return True, ""
 
     @classmethod
@@ -46,3 +48,8 @@ class DataVerifier:
         if not password.is_correct():
             return False, f"Password is incorrect"
         return True, ""
+
+    @classmethod
+    def verify_post_data(cls, add_post_data: AddPostData):
+        login_data = UserLoginData(add_post_data.author_name, add_post_data.author_password)
+        return AuthService.is_valid_user_login_data(login_data)

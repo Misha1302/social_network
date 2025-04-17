@@ -1,13 +1,17 @@
 from typing import List, Any
 
 from data_objects.message import Message
+from data_objects.post import Post
+from data_objects.user import User
 from database.images_service import ImagesService
 from database.sqlite_cursor_provider import SqliteCursorProvider
-from data_objects.user import User
 
 
 def to_users(collection: List[Any]):
     return [User(x) for x in collection]
+
+def to_posts(collection: List[Any]):
+    return [Post(x) for x in collection]
 
 
 # TODO: invulnerable to sql injections
@@ -37,5 +41,15 @@ class UserService:
             cursor.execute(
                 f"INSERT INTO messages VALUES ('{msg.msg_id}', '{msg.user1_id}', '{msg.user2_id}', '{msg.msg_text}')")
 
+    def add_post(self, post: Post):
+        with SqliteCursorProvider(None) as cursor:
+            cursor.execute(
+                f"INSERT INTO posts VALUES ('{post.post_id}', '{post.post_text}', '{post.topic}')")
+
     def add_image(self, img):
         return ImagesService().add_image(img)
+
+    def get_posts_by_topic(self, topic: str):
+        with SqliteCursorProvider(None) as cursor:
+            cursor.execute(f"SELECT * FROM posts WHERE topic = {topic}")
+            return to_posts(cursor.fetchall())

@@ -1,9 +1,13 @@
+import time
+
 from flask import *
 
-from data_objects.message import Message
+from AI.Gigachat import NeuroConnectGigachat
 from controllers.helpers.statuses import Statuses
-from database.data_verifier import DataVerifier
+from data_objects.add_post_data import AddPostData
+from data_objects.message import Message
 from data_objects.user import User
+from database.data_verifier import DataVerifier
 from database.user_service import UserService
 
 
@@ -23,6 +27,19 @@ def init_adding_controller(flask_app: Flask):
 
         service.add_user(user)
         return f'User with name {user.name} was added', Statuses.CREATED
+
+    @flask_app.post('/add_post')
+    def add_post():
+        print(f"POSTED: {time.time()}")
+        request.json['topic'] = NeuroConnectGigachat().get_topic(request.json["post_text"])
+        add_post_data = AddPostData(request.json)
+
+        is_correct = DataVerifier.verify_post_data(add_post_data)
+        if not is_correct:
+            return "auth error", Statuses.BAD_REQUEST
+
+        UserService().add_post(add_post_data.post)
+        return f'Post created', Statuses.CREATED
 
     @flask_app.post('/add_message')
     def add_message():

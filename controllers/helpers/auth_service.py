@@ -1,16 +1,14 @@
-from uuid import uuid4
-
+from data_objects.user import User
 from data_objects.user_login_data import UserLoginData
+from database.user_service import UserService
 
 
 class AuthService:
-    def __init__(self):
-        self._keys = {}
+    @classmethod
+    def is_valid_user_user(cls, user: User) -> bool:
+        return cls.is_valid_user_login_data(UserLoginData(user.name, user.password))
 
-    def get_auth_key(self, login_data: UserLoginData) -> str:
-        if login_data.name not in self._keys:
-            self._keys[login_data.name] = str(uuid4())
-        return self._keys[login_data.name]
-
-    def is_valid_key(self, key, user_name):
-        return user_name in self._keys and self._keys.get(user_name) == key
+    @classmethod
+    def is_valid_user_login_data(cls, login_data: UserLoginData) -> bool:
+        found_users = UserService().get_users_with_this_name(login_data.name)
+        return len(found_users) == 1 and found_users[0].password == login_data.password
