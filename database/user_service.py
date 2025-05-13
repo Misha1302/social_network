@@ -52,5 +52,10 @@ class UserService:
 
     def get_posts_by_topic(self, topic: str):
         with SqliteCursorProvider(None) as cursor:
-            cursor.execute(f"SELECT * FROM posts WHERE topic = {topic}")
+            cursor.execute(f"SELECT * FROM posts WHERE topic = '{topic}'")
             return to_posts(cursor.fetchall())
+
+    def get_topics(self):
+        with SqliteCursorProvider(None) as cursor:
+            cursor.execute(f"SELECT * FROM posts")
+            return [x[2] for x in cursor.fetchall()]

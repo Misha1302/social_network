@@ -30,8 +30,8 @@ def init_adding_controller(flask_app: Flask):
 
     @flask_app.post('/add_post')
     def add_post():
-        print(f"POSTED: {time.time()}")
         request.json['topic'] = NeuroConnectGigachat().get_topic(request.json["post_text"])
+        print(f"POSTED: {time.time()}")
         add_post_data = AddPostData(request.json)
 
         is_correct = DataVerifier.verify_post_data(add_post_data)
